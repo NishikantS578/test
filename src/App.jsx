@@ -2,16 +2,13 @@ import { useState } from 'react'
 
 function notify(e)
 {
-    Notification.requestPermission()
-    .then((x) => {
-        if(x == "granted")
-        {
-            new Notification("Example", {
-                body: "testing notification",
-                tag: "price-change"
-            });
-        }
-        console.log(x);
+    navigator.serviceWorker.register('sw.js');
+    Notification.requestPermission(function(result) {
+      if (result === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+          registration.showNotification('Notification with ServiceWorker');
+        });
+      }
     });
 }
 
